@@ -118,12 +118,14 @@ public class RequestUtil {
             }
             int index2 = normalized.lastIndexOf('/', index - 1);
             normalized = normalized.substring(0, index2) + normalized.substring(index + 3);
+            if (normalized.isEmpty()) {
+                normalized = "/";
+            }
         }
 
-        if (normalized.length() > 1 && addedTrailingSlash) {
-            // Remove the trailing '/' we added to that input and output are
-            // consistent w.r.t. to the presence of the trailing '/'.
-            normalized = normalized.substring(0, normalized.length() - 1);
+        if (normalized.length() > 1 && addedTrailingSlash && !normalized.endsWith("/")) {
+            // Re-add the trailing '/' we added to ensure directory semantic is preserved
+            normalized = normalized + "/";
         }
 
         // Return the normalized path that we have completed
